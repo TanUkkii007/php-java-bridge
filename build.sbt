@@ -19,7 +19,11 @@ lazy val `php-java-bridge-core` = (project in file("php-java-bridge-core"))
       "org.scalatest" %% "scalatest" % "3.0.1" % "test"
     ),
     testOptions += Tests.Argument(TestFrameworks.JUnit, "-v", "-a"),
-    fork in (Test, run) := true
+    fork in Test := true,
+    javaOptions in Test ++= Seq(
+      "-Djava.library.path=" + baseDirectory.value.getParent
+    ),
+    parallelExecution in Test := false
   )
 
 lazy val `php-scala-bridge` = (project in file("php-scala-bridge"))
