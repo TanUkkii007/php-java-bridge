@@ -11,8 +11,6 @@ public class PHP {
         }
     }
 
-    private static native int evalInternal(String code, String arg1);
-
     private static native int evalInternal(String code, String... argv);
 
     static String scriptName = "PHP#eval";
