@@ -25,6 +25,8 @@ sbt test
 
 ## Known issues
 
-### Invoke JNI function hangs
+### Invoking PHP via JNI call hangs
 
 Running tests involving PHP call via JNI result in hanging up.
+
+Passing C string to `zend_eval_string` works fine. However passing jstring results in hanging.
