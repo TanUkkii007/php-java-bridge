@@ -14,7 +14,7 @@ int eval_php(char* code, int argc, const char** argv) {
     zval *retval_ptr;
     int result;
     PHP_EMBED_START_BLOCK(argc, const_cast<char**>(argv))
-    result = zend_eval_string(code, retval_ptr, "php-java-bridge");
+    result = zend_eval_string(code, NULL, "php-java-bridge" TSRMLS_CC);
     PHP_EMBED_END_BLOCK()
     return result;
 }
