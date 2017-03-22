@@ -23,7 +23,7 @@ public class PHP {
         String[] argvWithScript = new String[1 + argv.length];
         argvWithScript[0] = scriptName;
         System.arraycopy(argv, 0, argvWithScript, 1, argv.length);
-        return evalInternal(code, scriptName);
+        return evalInternal(code, argvWithScript);
     }
 
 
