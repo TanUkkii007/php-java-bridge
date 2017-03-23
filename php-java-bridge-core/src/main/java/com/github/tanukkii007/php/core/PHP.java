@@ -13,10 +13,25 @@ public class PHP {
 
     private static native int evalInternal(String code, String... argv);
 
+    private static native boolean evalInternalBoolean(String code, String... argv);
+
+//    private static native long evalInternalLong(String code, String... argv);
+
+//    private static native double evalInternalDouble(String code, String... argv);
+
+//    private static native String evalInternalString(String code, String... argv);
+
     static String scriptName = "PHP#eval";
 
     public static int eval(String code, String... argv) {
         return evaluate(code, scriptName, argv);
+    }
+
+    public static boolean evaluateBoolean(String code, String scriptName, String... argv) {
+        String[] argvWithScript = new String[1 + argv.length];
+        argvWithScript[0] = "PHP#evaluateBoolean";
+        System.arraycopy(argv, 0, argvWithScript, 1, argv.length);
+        return evalInternalBoolean(code, argvWithScript);
     }
 
     private static int evaluate(String code, String scriptName, String... argv) {

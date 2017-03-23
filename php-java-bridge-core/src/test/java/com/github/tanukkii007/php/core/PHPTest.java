@@ -12,5 +12,13 @@ public class PHPTest extends JUnitSuite {
         assertEquals(0, result);
     }
 
+    @Test
+    public void evaluateBoolean() {
+        boolean resultTrue = PHP.evaluateBoolean("true", "a", "b", "c");
+        assertEquals(true, resultTrue);
+        boolean resultFalse = PHP.evaluateBoolean("false", "a", "b", "c");
+        assertEquals(false, resultFalse);
+    }
+
 
 }
