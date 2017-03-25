@@ -15,9 +15,9 @@ public class PHP {
 
     private static native boolean evalInternalBoolean(String code, String... argv);
 
-//    private static native long evalInternalLong(String code, String... argv);
+    private static native long evalInternalLong(String code, String... argv);
 
-//    private static native double evalInternalDouble(String code, String... argv);
+    private static native double evalInternalDouble(String code, String... argv);
 
 //    private static native String evalInternalString(String code, String... argv);
 
@@ -32,6 +32,20 @@ public class PHP {
         argvWithScript[0] = "PHP#evaluateBoolean";
         System.arraycopy(argv, 0, argvWithScript, 1, argv.length);
         return evalInternalBoolean(code, argvWithScript);
+    }
+
+    public static long evaluateLong(String code, String scriptName, String... argv) {
+        String[] argvWithScript = new String[1 + argv.length];
+        argvWithScript[0] = "PHP#evaluateLong";
+        System.arraycopy(argv, 0, argvWithScript, 1, argv.length);
+        return evalInternalLong(code, argvWithScript);
+    }
+
+    public static double evaluateDouble(String code, String scriptName, String... argv) {
+        String[] argvWithScript = new String[1 + argv.length];
+        argvWithScript[0] = "PHP#evaluateDouble";
+        System.arraycopy(argv, 0, argvWithScript, 1, argv.length);
+        return evalInternalDouble(code, argvWithScript);
     }
 
     private static int evaluate(String code, String scriptName, String... argv) {

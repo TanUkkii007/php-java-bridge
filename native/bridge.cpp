@@ -197,6 +197,42 @@ JNIEXPORT jboolean JNICALL Java_com_github_tanukkii007_php_core_PHP_evalInternal
     return result;
 }
 
+JNIEXPORT jlong JNICALL Java_com_github_tanukkii007_php_core_PHP_evalInternalLong
+        (JNIEnv *jenv, jclass clazz, jstring code, jobjectArray argv) {
+    jlong result = 0;
+    const char *code_pstr = (const char *)jenv->GetStringUTFChars(code, 0);
+    if (!code_pstr) return result;
+    zval *retval_ptr = (zval*)malloc(sizeof(zval));
+    JNI_BUILD_ARGS(jenv, argv, argc, buff, jstrings)
+    auto status = eval_php(const_cast<char*>(code_pstr), argc, buff, retval_ptr);
+    JNI_RELEASE_ARGS(argc, buff, jstrings)
+    jenv->ReleaseStringUTFChars(code, code_pstr);
+    if (status == SUCCESS) {
+        result = convertZValToJLong(retval_ptr);
+        // ToDo: throw exception when not a long
+    }
+    free(retval_ptr);
+    return result;
+}
+
+JNIEXPORT jdouble JNICALL Java_com_github_tanukkii007_php_core_PHP_evalInternalDouble
+        (JNIEnv *jenv, jclass clazz, jstring code, jobjectArray argv) {
+    jdouble result = 0;
+    const char *code_pstr = (const char *)jenv->GetStringUTFChars(code, 0);
+    if (!code_pstr) return result;
+    zval *retval_ptr = (zval*)malloc(sizeof(zval));
+    JNI_BUILD_ARGS(jenv, argv, argc, buff, jstrings)
+    auto status = eval_php(const_cast<char*>(code_pstr), argc, buff, retval_ptr);
+    JNI_RELEASE_ARGS(argc, buff, jstrings)
+    jenv->ReleaseStringUTFChars(code, code_pstr);
+    if (status == SUCCESS) {
+        result = convertZValToJDouble(retval_ptr);
+        // ToDo: throw exception when not a double
+    }
+    free(retval_ptr);
+    return result;
+}
+
 #ifdef __cplusplus
 }
 #endif

@@ -20,5 +20,20 @@ public class PHPTest extends JUnitSuite {
         assertEquals(false, resultFalse);
     }
 
+    @Test
+    public void evaluateLong() {
+        long resultPositive = PHP.evaluateLong("12345", "a", "b", "c");
+        assertEquals(12345, resultPositive);
+        long resultNegative = PHP.evaluateLong("-12345", "a", "b", "c");
+        assertEquals(-12345, resultNegative);
+    }
+
+    @Test
+    public void evaluateDouble() {
+        double resultPositive = PHP.evaluateDouble("12345.6789", "a", "b", "c");
+        assertEquals(12345.6789, resultPositive, 0.0001);
+        double resultNegative = PHP.evaluateDouble("-12345.6789", "a", "b", "c");
+        assertEquals(-12345.6789, resultNegative, 0.0001);
+    }
 
 }
