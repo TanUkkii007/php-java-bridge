@@ -1,13 +1,21 @@
 package com.github.tanukkii007.php.core;
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Vector;
 
 public class PHP {
     static {
         if (!isLibraryLoaded()) {
-            System.loadLibrary("bridge");
+           try {
+               load("bridge");
+           } catch (Exception ex) {
+               throw new RuntimeException(ex);
+           }
         }
     }
 
@@ -70,6 +78,35 @@ public class PHP {
         } catch (final Throwable e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    // helpful implementation
+    // https://github.com/jodersky/sbt-jni/blob/master/macros/src/main/scala/ch/jodersky/jni/annotations.scala
+    private static void loadPackaged(String libName) throws IOException {
+        String lib = System.mapLibraryName(libName);
+        Path tmp = Files.createTempDirectory("jni-");
+        String platform = "darwin";
+        String resourcePath = "/native/" + platform + "/" + lib;
+        InputStream resourceStream = PHP.class.getResourceAsStream(resourcePath);
+        if (resourceStream == null) {
+            throw new UnsatisfiedLinkError(
+                    "Native library " + lib + " (" + resourcePath + ") cannot be found on the classpath.");
+        }
+        Path extractedPath = tmp.resolve(lib);
+        try {
+            Files.copy(resourceStream, extractedPath);
+        } catch (Exception ex) {
+            throw new UnsatisfiedLinkError("Error while extracting native library: " + ex);
+        }
+        System.load(extractedPath.toAbsolutePath().toString());
+    }
+
+    private static void load(String libName) throws IOException {
+        try {
+            System.loadLibrary(libName);
+        } catch (UnsatisfiedLinkError ex) {
+            loadPackaged(libName);
         }
     }
 }
